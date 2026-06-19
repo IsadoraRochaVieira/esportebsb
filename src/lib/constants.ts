@@ -1,0 +1,36 @@
+export const ESPORTES = [
+  { value: 'futsal', label: 'Futsal', emoji: '⚽', cor: '#16a34a', bg: '#dcfce7', text: '#166534' },
+  { value: 'tenis', label: 'Tênis', emoji: '🎾', cor: '#ca8a04', bg: '#fef9c3', text: '#854d0e' },
+  { value: 'volei', label: 'Vôlei', emoji: '🏐', cor: '#2563eb', bg: '#dbeafe', text: '#1e40af' },
+  { value: 'basquete', label: 'Basquete', emoji: '🏀', cor: '#ea580c', bg: '#ffedd5', text: '#9a3412' },
+  { value: 'corrida', label: 'Corrida', emoji: '🏃', cor: '#9333ea', bg: '#f3e8ff', text: '#6b21a8' },
+  { value: 'jiu_jitsu', label: 'Jiu-Jitsu', emoji: '🥋', cor: '#dc2626', bg: '#fee2e2', text: '#991b1b' },
+  { value: 'natacao', label: 'Natação', emoji: '🏊', cor: '#0891b2', bg: '#cffafe', text: '#155e75' },
+  { value: 'outro', label: 'Outro', emoji: '🏅', cor: '#64748b', bg: '#f1f5f9', text: '#475569' },
+]
+
+export const TIPOS = [
+  { value: 'aberto', label: 'Aberto', emoji: '🔓', cor: 'bg-blue-100 text-blue-700' },
+  { value: 'misto', label: 'Misto', emoji: '⚥', cor: 'bg-purple-100 text-purple-700' },
+  { value: 'feminino', label: 'Feminino', emoji: '♀', cor: 'bg-pink-100 text-pink-700' },
+  { value: 'masculino', label: 'Masculino', emoji: '♂', cor: 'bg-green-100 text-green-700' },
+]
+
+export const DIAS = [
+  { value: 'segunda', label: 'Segunda-feira', short: 'Seg' },
+  { value: 'terca', label: 'Terça-feira', short: 'Ter' },
+  { value: 'quarta', label: 'Quarta-feira', short: 'Qua' },
+  { value: 'quinta', label: 'Quinta-feira', short: 'Qui' },
+  { value: 'sexta', label: 'Sexta-feira', short: 'Sex' },
+  { value: 'sabado', label: 'Sábado', short: 'Sáb' },
+  { value: 'domingo', label: 'Domingo', short: 'Dom' },
+]
+
+export const GENEROS = [
+  { value: 'masculino', label: 'Masculino' },
+  { value: 'feminino', label: 'Feminino' },
+  { value: 'nao_informado', label: 'Prefiro não dizer' },
+]
+
+export const BSB_CENTER: [number, number] = [-15.7801, -47.9292]
+export const BSB_ZOOM = 12
