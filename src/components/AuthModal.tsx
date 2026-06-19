@@ -6,10 +6,11 @@ import { createClient } from '@/lib/supabase'
 interface AuthModalProps {
   onFechar: () => void
   onSucesso?: () => void
+  modoInicial?: 'login' | 'cadastro'
 }
 
-export default function AuthModal({ onFechar, onSucesso }: AuthModalProps) {
-  const [modo, setModo] = useState<'login' | 'cadastro'>('login')
+export default function AuthModal({ onFechar, onSucesso, modoInicial = 'login' }: AuthModalProps) {
+  const [modo, setModo] = useState<'login' | 'cadastro'>(modoInicial)
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
   const [nome, setNome] = useState('')

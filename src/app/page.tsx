@@ -25,6 +25,7 @@ export default function Home() {
   const [novoPin, setNovoPin] = useState<{ lat: number; lng: number } | null>(null)
   const [quadraParaJogo, setQuadraParaJogo] = useState<Quadra | null>(null)
   const [showAuth, setShowAuth] = useState(false)
+  const [authModo, setAuthModo] = useState<'login' | 'cadastro'>('login')
   const [showPerfil, setShowPerfil] = useState(false)
   const [vista, setVista] = useState<'lista' | 'mapa'>('lista')
   const [busca, setBusca] = useState('')
@@ -173,10 +174,16 @@ export default function Home() {
               👤
             </button>
           ) : (
-            <button onClick={() => setShowAuth(true)}
-              className="text-sm font-semibold text-blue-600 hover:text-blue-700 transition whitespace-nowrap">
-              Entrar
-            </button>
+            <div className="flex items-center gap-2">
+              <button onClick={() => { setAuthModo('login'); setShowAuth(true) }}
+                className="text-sm font-semibold text-slate-600 hover:text-slate-800 transition whitespace-nowrap hidden sm:block">
+                Entrar
+              </button>
+              <button onClick={() => { setAuthModo('cadastro'); setShowAuth(true) }}
+                className="text-sm font-semibold bg-blue-600 text-white px-3 py-2 rounded-xl hover:bg-blue-700 transition whitespace-nowrap">
+                Criar conta
+              </button>
+            </div>
           )}
         </div>
 
@@ -288,27 +295,86 @@ export default function Home() {
             modoPin={modoPin}
             visible={vista === 'mapa'} />
 
-          {/* Balão do local selecionado no mapa */}
+          {/* Painel lateral do local selecionado */}
           {quadraParaJogo && (
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white rounded-2xl shadow-xl border border-slate-200 p-4 w-80 z-10 animate-slide-up">
-              <div className="flex items-start justify-between mb-3">
-                <div>
-                  <p className="font-bold text-slate-900">{quadraParaJogo.nome}</p>
-                  <p className="text-xs text-slate-500">{quadraParaJogo.endereco}{quadraParaJogo.bairro ? ` · ${quadraParaJogo.bairro}` : ''}</p>
+            <div className="absolute inset-y-0 right-0 w-full sm:w-96 bg-white shadow-2xl z-10 flex flex-col animate-slide-up overflow-hidden">
+              {/* Header do local */}
+              <div className="bg-gradient-to-br from-slate-800 to-slate-900 text-white p-5 flex-shrink-0">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-lg leading-tight">{quadraParaJogo.nome}</p>
+                    <p className="text-slate-300 text-sm mt-0.5 truncate">{quadraParaJogo.endereco}{quadraParaJogo.bairro ? ` · ${quadraParaJogo.bairro}` : ''}</p>
+                  </div>
+                  <button onClick={() => setQuadraParaJogo(null)} className="text-slate-400 hover:text-white text-2xl leading-none ml-3 flex-shrink-0">×</button>
                 </div>
-                <button onClick={() => setQuadraParaJogo(null)} className="text-slate-400 hover:text-slate-600 text-lg leading-none ml-2">×</button>
+                <div className="flex items-center gap-2 mt-3">
+                  <span className="text-xs bg-white/10 text-white px-2 py-1 rounded-full">
+                    📍 {quadraParaJogo.tipo ?? 'Local esportivo'}
+                  </span>
+                  <span className="text-xs bg-white/10 text-white px-2 py-1 rounded-full">
+                    {(quadraParaJogo.jogos?.length ?? 0)} jogo{(quadraParaJogo.jogos?.length ?? 0) !== 1 ? 's' : ''}
+                  </span>
+                </div>
               </div>
-              <p className="text-xs text-slate-500 mb-3">
-                {(quadraParaJogo.jogos?.length ?? 0) > 0
-                  ? `${quadraParaJogo.jogos!.length} jogo${quadraParaJogo.jogos!.length > 1 ? 's' : ''} cadastrado${quadraParaJogo.jogos!.length > 1 ? 's' : ''}`
-                  : 'Nenhum jogo ainda'}
-              </p>
-              {userId && (
-                <button
-                  className="w-full bg-blue-600 text-white py-2 rounded-xl text-sm font-semibold hover:bg-blue-700 transition">
-                  + Criar jogo aqui
-                </button>
-              )}
+
+              {/* Lista de jogos */}
+              <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                {(quadraParaJogo.jogos?.length ?? 0) === 0 ? (
+                  <div className="text-center py-10">
+                    <div className="text-4xl mb-2">🏟</div>
+                    <p className="text-slate-500 text-sm">Nenhum jogo cadastrado aqui ainda.</p>
+                    <p className="text-slate-400 text-xs mt-1">Seja o primeiro!</p>
+                  </div>
+                ) : (
+                  quadraParaJogo.jogos!.map((j: any) => {
+                    const esp = ESPORTES.find((e) => e.value === j.esporte) ?? ESPORTES[ESPORTES.length - 1]
+                    const vagas = j.max_participantes - (j.participantes?.length ?? 0)
+                    const participando = participacoes.has(j.id)
+                    return (
+                      <div key={j.id} className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+                        <div className="flex items-start gap-3">
+                          <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style={{ background: esp.bg }}>
+                            {esp.emoji}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-bold text-slate-900 text-sm leading-tight">{j.titulo}</p>
+                            <p className="text-xs text-slate-500 mt-0.5">{esp.label} · {j.tipo === 'feminino' ? '♀ Feminino' : j.tipo === 'misto' ? '⚥ Misto' : '🔓 Aberto'}</p>
+                            <div className="flex items-center gap-3 mt-1.5 text-xs text-slate-500">
+                              <span>📅 {j.dia_semana ?? j.data_evento}</span>
+                              <span>🕐 {j.horario}</span>
+                              <span style={{ color: esp.cor }} className="font-semibold">{vagas} vagas</span>
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => participando ? cancelar(j.id) : participar(j.id)}
+                          className="w-full mt-3 py-2 rounded-xl text-xs font-semibold transition"
+                          style={participando
+                            ? { background: '#fee2e2', color: '#991b1b' }
+                            : { background: esp.cor, color: 'white' }}>
+                          {participando ? 'Cancelar participação' : 'Quero participar →'}
+                        </button>
+                      </div>
+                    )
+                  })
+                )}
+              </div>
+
+              {/* Footer — criar jogo */}
+              <div className="p-4 border-t border-slate-100 flex-shrink-0">
+                {userId ? (
+                  <button
+                    onClick={() => {/* abre modal novo jogo */}}
+                    className="w-full bg-blue-600 text-white py-3 rounded-xl text-sm font-semibold hover:bg-blue-700 transition">
+                    + Criar jogo neste local
+                  </button>
+                ) : (
+                  <button onClick={() => { setAuthModo('cadastro'); setShowAuth(true) }}
+                    className="w-full bg-blue-600 text-white py-3 rounded-xl text-sm font-semibold hover:bg-blue-700 transition">
+                    Entre para participar ou criar um jogo
+                  </button>
+                )}
+              </div>
             </div>
           )}
         </div>
@@ -385,7 +451,7 @@ export default function Home() {
         </div>
       )}
 
-      {showAuth && <AuthModal onFechar={() => setShowAuth(false)} onSucesso={() => toast.success('Bem-vinda! 👋')} />}
+      {showAuth && <AuthModal onFechar={() => setShowAuth(false)} onSucesso={() => toast.success('Bem-vinda! 👋')} modoInicial={authModo} />}
 
       {showPerfil && userId && (
         <ModalPerfil userId={userId} userEmail={userEmail}
