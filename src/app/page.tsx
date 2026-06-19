@@ -29,6 +29,7 @@ export default function Home() {
   const [vista, setVista] = useState<'lista' | 'mapa'>('lista')
   const [busca, setBusca] = useState('')
   const [carregando, setCarregando] = useState(true)
+  const [showSobre, setShowSobre] = useState(false)
 
   const supabase = createClient()
 
@@ -130,9 +131,9 @@ export default function Home() {
       <header className="bg-white border-b border-slate-200 flex-shrink-0 z-20 shadow-sm">
         <div className="flex items-center gap-3 px-4 py-3">
           {/* Logo */}
-          <div className="flex items-center gap-2 mr-1">
+          <div className="flex items-center gap-2 mr-1 cursor-pointer" onClick={() => setShowSobre(true)}>
             <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">⚽</div>
-            <span className="font-bold text-slate-900 text-base hidden sm:block">EsporteBSB</span>
+            <span className="font-bold text-slate-900 text-base hidden sm:block">Esporte Brasília</span>
           </div>
 
           {/* Busca */}
@@ -284,7 +285,8 @@ export default function Home() {
           <Mapa quadras={quadras} filtroEsporte={filtroEsporte}
             onQuadraSelecionada={(q) => { setQuadraParaJogo(q) }}
             onMapClick={handleMapClick}
-            modoPin={modoPin} />
+            modoPin={modoPin}
+            visible={vista === 'mapa'} />
 
           {/* Balão do local selecionado no mapa */}
           {quadraParaJogo && (
@@ -342,6 +344,45 @@ export default function Home() {
             carregarDados()
             toast.success('Jogo criado! 🎉')
           }} />
+      )}
+
+      {showSobre && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center p-4 animate-fade-in" onClick={() => setShowSobre(false)}>
+          <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden animate-slide-up" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-700 px-6 py-8 text-white relative">
+              <button onClick={() => setShowSobre(false)} className="absolute top-4 right-4 text-blue-200 hover:text-white text-2xl leading-none">×</button>
+              <div className="text-4xl mb-3">⚽</div>
+              <h2 className="text-2xl font-bold">Esporte Brasília</h2>
+              <p className="text-blue-200 text-sm mt-1">A rede social dos esportes do DF</p>
+            </div>
+            <div className="p-6 space-y-5">
+              <div className="flex gap-3">
+                <div className="text-2xl">💚</div>
+                <div>
+                  <p className="font-bold text-slate-800 text-sm">Saúde que conecta</p>
+                  <p className="text-slate-500 text-sm mt-0.5">Acreditamos que o esporte é um dos pilares da saúde mental e física. Cada jogo é uma oportunidade de se sentir melhor — e de conhecer pessoas incríveis.</p>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <div className="text-2xl">🏙️</div>
+                <div>
+                  <p className="font-bold text-slate-800 text-sm">Feito para Brasília</p>
+                  <p className="text-slate-500 text-sm mt-0.5">O DF tem parques, quadras e espaços incríveis subutilizados. Queremos mudar isso — conectando quem quer jogar com quem já joga, perto de você.</p>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <div className="text-2xl">🤝</div>
+                <div>
+                  <p className="font-bold text-slate-800 text-sm">Comunidade aberta</p>
+                  <p className="text-slate-500 text-sm mt-0.5">Sem inscrições complicadas, sem taxas. Você cadastra seu jogo, abre vagas e a galera aparece. Simples assim.</p>
+                </div>
+              </div>
+              <div className="border-t border-slate-100 pt-4">
+                <p className="text-xs text-slate-400 text-center">Criado com ❤️ em Brasília · 2026</p>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
 
       {showAuth && <AuthModal onFechar={() => setShowAuth(false)} onSucesso={() => toast.success('Bem-vinda! 👋')} />}

@@ -13,14 +13,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EsporteBSB — Encontre jogos em Brasília",
-  description: "Encontre e crie jogos de futsal, tênis, vôlei, basquete e mais em Brasília. A rede social dos esportes do DF.",
+  title: "Esporte Brasília — Encontre jogos no DF",
+  description: "Encontre e crie jogos de futsal, tênis, vôlei, basquete e mais em Brasília. A rede social dos esportes do DF — saúde, comunidade e movimento.",
   manifest: "/manifest.json",
   themeColor: "#2563eb",
-  appleWebApp: { capable: true, statusBarStyle: "default", title: "EsporteBSB" },
+  appleWebApp: { capable: true, statusBarStyle: "default", title: "Esporte Brasília" },
   openGraph: {
-    title: "EsporteBSB",
-    description: "A rede social dos esportes de Brasília",
+    title: "Esporte Brasília",
+    description: "A rede social dos esportes de Brasília — saúde, comunidade e movimento.",
     type: "website",
   },
 };

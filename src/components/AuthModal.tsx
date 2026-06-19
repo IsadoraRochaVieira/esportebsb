@@ -30,7 +30,14 @@ export default function AuthModal({ onFechar, onSucesso }: AuthModalProps) {
       if (!nome.trim()) { setErro('Digite seu nome.'); setCarregando(false); return }
       if (senha.length < 6) { setErro('Senha precisa ter ao menos 6 caracteres.'); setCarregando(false); return }
       const { data, error } = await supabase.auth.signUp({ email, password: senha })
-      if (error) { setErro('Erro ao criar conta. Tente outro e-mail.'); setCarregando(false); return }
+      if (error) {
+        if (error.message.includes('already registered') || error.message.includes('already been registered')) {
+          setErro('Este e-mail já tem uma conta. Clique em "Entrar" abaixo.')
+        } else {
+          setErro('Erro ao criar conta: ' + error.message)
+        }
+        setCarregando(false); return
+      }
       if (data.user) {
         await supabase.from('perfis').upsert({ id: data.user.id, nome: nome.trim() })
       }
@@ -49,7 +56,7 @@ export default function AuthModal({ onFechar, onSucesso }: AuthModalProps) {
           <button onClick={onFechar} className="float-right text-blue-200 hover:text-white text-xl leading-none">×</button>
           <div className="text-2xl mb-1">⚽</div>
           <h2 className="text-xl font-bold">
-            {modo === 'login' ? 'Bem-vinda de volta!' : 'Junte-se ao EsporteBSB'}
+            {modo === 'login' ? 'Bem-vinda de volta!' : 'Junte-se ao Esporte Brasília'}
           </h2>
           <p className="text-blue-200 text-sm mt-0.5">
             {modo === 'login' ? 'Entre para ver e participar dos jogos' : 'Encontre seu esporte em Brasília'}
