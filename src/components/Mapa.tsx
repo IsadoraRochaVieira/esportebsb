@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { BSB_CENTER, BSB_ZOOM, ESPORTES } from '@/lib/constants'
 import type { Quadra } from '@/lib/supabase'
 
@@ -17,6 +17,8 @@ export default function Mapa({ quadras, filtroEsporte, onQuadraSelecionada, onMa
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<any>(null)
   const markersRef = useRef<any[]>([])
+  const tileRef = useRef<any>(null)
+  const [darkMode, setDarkMode] = useState(false)
 
   useEffect(() => {
     if (typeof window === 'undefined' || mapInstanceRef.current) return
@@ -31,7 +33,7 @@ export default function Mapa({ quadras, filtroEsporte, onQuadraSelecionada, onMa
 
       L.control.zoom({ position: 'bottomright' }).addTo(map)
 
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      tileRef.current = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         attribution: '© OpenStreetMap © CartoDB',
         maxZoom: 19,
       }).addTo(map)
@@ -62,6 +64,17 @@ export default function Mapa({ quadras, filtroEsporte, onQuadraSelecionada, onMa
       setTimeout(() => mapInstanceRef.current?.invalidateSize(), 150)
     }
   }, [visible])
+
+  useEffect(() => {
+    if (!mapInstanceRef.current || !tileRef.current) return
+    import('leaflet').then((L) => {
+      tileRef.current.remove()
+      const url = darkMode
+        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+        : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+      tileRef.current = L.tileLayer(url, { attribution: '© OpenStreetMap © CartoDB', maxZoom: 19 }).addTo(mapInstanceRef.current)
+    })
+  }, [darkMode])
 
   useEffect(() => {
     if (!mapInstanceRef.current) return
@@ -146,6 +159,12 @@ export default function Mapa({ quadras, filtroEsporte, onQuadraSelecionada, onMa
     <>
       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
       <div ref={mapRef} className="w-full h-full" />
+      <button
+        onClick={() => setDarkMode(!darkMode)}
+        className="absolute bottom-20 right-4 z-10 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-lg border border-slate-200 hover:bg-slate-50 transition"
+        title={darkMode ? 'Modo claro' : 'Modo escuro'}>
+        {darkMode ? '☀️' : '🌙'}
+      </button>
     </>
   )
 }

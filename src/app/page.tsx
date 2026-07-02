@@ -10,6 +10,7 @@ import ModalNovaQuadra from '@/components/ModalNovaQuadra'
 import ModalNovoJogo from '@/components/ModalNovoJogo'
 import ModalPerfil from '@/components/ModalPerfil'
 import AuthModal from '@/components/AuthModal'
+import LandingPage from '@/components/LandingPage'
 
 const Mapa = dynamic(() => import('@/components/Mapa'), { ssr: false })
 
@@ -31,6 +32,7 @@ export default function Home() {
   const [busca, setBusca] = useState('')
   const [carregando, setCarregando] = useState(true)
   const [showSobre, setShowSobre] = useState(false)
+  const [showLanding, setShowLanding] = useState(true)
 
   const supabase = createClient()
 
@@ -122,6 +124,15 @@ export default function Home() {
     setModoPin(true)
     setVista('mapa')
     toast('Clique no mapa para marcar o local', { icon: '📍' })
+  }
+
+  if (showLanding) {
+    return (
+      <LandingPage
+        onEntrar={() => setShowLanding(false)}
+        onCriarConta={() => { setShowLanding(false); setAuthModo('cadastro'); setShowAuth(true) }}
+      />
+    )
   }
 
   return (
