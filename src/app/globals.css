@@ -12,6 +12,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Altura real da tela no mobile (barra do navegador não conta) */
+.app-shell {
+  height: 100vh;
+  height: 100dvh;
+}
+
 @keyframes slide-up {
   from { transform: translateY(16px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }

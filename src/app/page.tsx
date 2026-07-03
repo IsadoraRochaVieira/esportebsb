@@ -136,7 +136,7 @@ export default function Home() {
   }
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden" style={{ background: '#f1f5f9' }}>
+    <div className="app-shell flex flex-col overflow-hidden" style={{ background: '#f1f5f9' }}>
       <Toaster position="top-center" richColors />
 
       {/* Header */}
@@ -319,7 +319,7 @@ export default function Home() {
 
           {/* Painel lateral do local selecionado */}
           {quadraParaJogo && (
-            <div className="absolute inset-y-0 right-0 w-full sm:w-96 bg-white shadow-2xl z-10 flex flex-col animate-slide-up overflow-hidden">
+            <div className="fixed inset-0 sm:absolute sm:inset-y-0 sm:left-auto sm:right-0 w-full sm:w-96 bg-white shadow-2xl z-40 flex flex-col animate-slide-up overflow-hidden">
               {/* Header do local */}
               <div className="bg-gradient-to-br from-slate-800 to-slate-900 text-white p-5 flex-shrink-0">
                 <div className="flex items-start justify-between">
@@ -396,12 +396,14 @@ export default function Home() {
       </div>
 
       {/* FAB mobile */}
+      {!quadraParaJogo && (
       <div className="lg:hidden fixed bottom-6 right-4 z-30">
         <button onClick={ativarModoPin}
           className="w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center text-2xl hover:bg-blue-700 transition active:scale-95">
           +
         </button>
       </div>
+      )}
 
       {/* Modais */}
       {novoPin && (
