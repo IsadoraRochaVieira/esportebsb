@@ -28,7 +28,8 @@ export default function Home() {
   const [showAuth, setShowAuth] = useState(false)
   const [authModo, setAuthModo] = useState<'login' | 'cadastro'>('login')
   const [showPerfil, setShowPerfil] = useState(false)
-  const [vista, setVista] = useState<'lista' | 'mapa'>('lista')
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024
+  const [vista, setVista] = useState<'lista' | 'mapa'>(isMobile ? 'mapa' : 'lista')
   const [busca, setBusca] = useState('')
   const [carregando, setCarregando] = useState(true)
   const [showSobre, setShowSobre] = useState(false)
@@ -339,7 +340,7 @@ export default function Home() {
                 ) : (
                   quadraParaJogo.jogos!.map((j: any) => {
                     const esp = ESPORTES.find((e) => e.value === j.esporte) ?? ESPORTES[ESPORTES.length - 1]
-                    const vagas = j.max_participantes - (j.participantes?.length ?? 0)
+                    const vagas = (j.vagas ?? 0) - (j.participantes?.length ?? 0)
                     const participando = participacoes.has(j.id)
                     return (
                       <div key={j.id} className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
