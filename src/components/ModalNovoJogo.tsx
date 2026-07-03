@@ -6,7 +6,7 @@ import { ESPORTES, TIPOS, DIAS } from '@/lib/constants'
 
 interface ModalNovoJogoProps {
   quadraId: string
-  userId: string
+  userId?: string
   onFechar: () => void
   onSalvo: () => void
 }
@@ -38,7 +38,7 @@ export default function ModalNovoJogo({ quadraId, userId, onFechar, onSalvo }: M
     setSalvando(true)
     const { error } = await supabase.from('jogos').insert({
       quadra_id: quadraId,
-      criado_por: userId,
+      criado_por: userId ?? null,
       titulo: form.titulo,
       esporte: form.esporte,
       tipo: form.tipo,

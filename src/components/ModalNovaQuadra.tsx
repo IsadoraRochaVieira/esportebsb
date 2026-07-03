@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase'
 interface ModalNovaQuadraProps {
   lat: number
   lng: number
-  userId: string
+  userId?: string
   onFechar: () => void
   onSalvo: (quadraId: string) => void
 }
@@ -22,7 +22,7 @@ export default function ModalNovaQuadra({ lat, lng, userId, onFechar, onSalvo }:
     setSalvando(true)
     const { data, error } = await supabase.from('quadras').insert({
       nome: form.nome, endereco: form.endereco,
-      bairro: form.bairro || null, lat, lng, criado_por: userId,
+      bairro: form.bairro || null, lat, lng, criado_por: userId ?? null,
     }).select().single()
     setSalvando(false)
     if (error || !data) { setErro('Erro ao salvar. Tente novamente.'); return }

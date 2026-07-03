@@ -101,10 +101,9 @@ export default function Home() {
 
   const handleMapClick = useCallback((lat: number, lng: number) => {
     if (!modoPin) return
-    if (!userId) { setShowAuth(true); return }
     setNovoPin({ lat, lng })
     setModoPin(false)
-  }, [modoPin, userId])
+  }, [modoPin])
 
   const jogosFiltrados = jogos.filter((j) => {
     if (filtroEsporte && j.esporte !== filtroEsporte) return false
@@ -122,7 +121,6 @@ export default function Home() {
   const outrosJogos = jogosFiltrados.filter((j) => !participacoes.has(j.id))
 
   function ativarModoPin() {
-    if (!userId) { setShowAuth(true); return }
     setModoPin(true)
     setVista('mapa')
     toast('Clique no mapa para marcar o local', { icon: '📍' })
@@ -386,18 +384,11 @@ export default function Home() {
 
               {/* Footer — criar jogo */}
               <div className="p-4 border-t border-slate-100 flex-shrink-0">
-                {userId ? (
-                  <button
-                    onClick={() => { setCriarJogoNaQuadra(quadraParaJogo); setQuadraParaJogo(null) }}
-                    className="w-full bg-blue-600 text-white py-3 rounded-xl text-sm font-semibold hover:bg-blue-700 transition">
-                    + Criar jogo neste local
-                  </button>
-                ) : (
-                  <button onClick={() => { setAuthModo('cadastro'); setShowAuth(true) }}
-                    className="w-full bg-blue-600 text-white py-3 rounded-xl text-sm font-semibold hover:bg-blue-700 transition">
-                    Entre para participar ou criar um jogo
-                  </button>
-                )}
+                <button
+                  onClick={() => { setCriarJogoNaQuadra(quadraParaJogo); setQuadraParaJogo(null) }}
+                  className="w-full bg-blue-600 text-white py-3 rounded-xl text-sm font-semibold hover:bg-blue-700 transition">
+                  + Criar jogo neste local
+                </button>
               </div>
             </div>
           )}
@@ -413,7 +404,7 @@ export default function Home() {
       </div>
 
       {/* Modais */}
-      {novoPin && userId && (
+      {novoPin && (
         <ModalNovaQuadra lat={novoPin.lat} lng={novoPin.lng} userId={userId}
           onFechar={() => setNovoPin(null)}
           onSalvo={(quadraId) => {
@@ -426,7 +417,7 @@ export default function Home() {
           }} />
       )}
 
-      {criarJogoNaQuadra && userId && (
+      {criarJogoNaQuadra && (
         <ModalNovoJogo quadraId={criarJogoNaQuadra.id} userId={userId}
           onFechar={() => setCriarJogoNaQuadra(null)}
           onSalvo={() => {
