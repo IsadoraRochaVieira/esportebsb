@@ -25,6 +25,7 @@ export default function Home() {
   const [modoPin, setModoPin] = useState(false)
   const [novoPin, setNovoPin] = useState<{ lat: number; lng: number } | null>(null)
   const [quadraParaJogo, setQuadraParaJogo] = useState<Quadra | null>(null)
+  const [criarJogoNaQuadra, setCriarJogoNaQuadra] = useState<Quadra | null>(null)
   const [showAuth, setShowAuth] = useState(false)
   const [authModo, setAuthModo] = useState<'login' | 'cadastro'>('login')
   const [showPerfil, setShowPerfil] = useState(false)
@@ -376,7 +377,7 @@ export default function Home() {
               <div className="p-4 border-t border-slate-100 flex-shrink-0">
                 {userId ? (
                   <button
-                    onClick={() => {/* abre modal novo jogo */}}
+                    onClick={() => { setCriarJogoNaQuadra(quadraParaJogo); setQuadraParaJogo(null) }}
                     className="w-full bg-blue-600 text-white py-3 rounded-xl text-sm font-semibold hover:bg-blue-700 transition">
                     + Criar jogo neste local
                   </button>
@@ -409,16 +410,16 @@ export default function Home() {
             carregarDados()
             toast.success('Local cadastrado!')
             supabase.from('quadras').select('*, jogos(*, participantes(user_id,status))').eq('id', quadraId).single().then(({ data }) => {
-              if (data) { setQuadraParaJogo(data); setVista('mapa') }
+              if (data) { setCriarJogoNaQuadra(data); setVista('mapa') }
             })
           }} />
       )}
 
-      {quadraParaJogo && userId && (
-        <ModalNovoJogo quadraId={quadraParaJogo.id} userId={userId}
-          onFechar={() => setQuadraParaJogo(null)}
+      {criarJogoNaQuadra && userId && (
+        <ModalNovoJogo quadraId={criarJogoNaQuadra.id} userId={userId}
+          onFechar={() => setCriarJogoNaQuadra(null)}
           onSalvo={() => {
-            setQuadraParaJogo(null)
+            setCriarJogoNaQuadra(null)
             carregarDados()
             toast.success('Jogo criado! 🎉')
           }} />
