@@ -320,7 +320,7 @@ export default function Home() {
                 </div>
                 <div className="flex items-center gap-2 mt-3">
                   <span className="text-xs bg-white/10 text-white px-2 py-1 rounded-full">
-                    📍 {quadraParaJogo.tipo ?? 'Local esportivo'}
+                    📍 Local esportivo
                   </span>
                   <span className="text-xs bg-white/10 text-white px-2 py-1 rounded-full">
                     {(quadraParaJogo.jogos?.length ?? 0)} jogo{(quadraParaJogo.jogos?.length ?? 0) !== 1 ? 's' : ''}
