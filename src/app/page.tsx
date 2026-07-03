@@ -302,6 +302,17 @@ export default function Home() {
 
         {/* Mapa */}
         <div className={`${vista === 'mapa' ? 'flex' : 'hidden'} lg:flex flex-1 relative`}>
+          {/* Banner modo pin */}
+          {modoPin && (
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 bg-orange-500 text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3 animate-slide-up">
+              <span className="text-xl">📍</span>
+              <div>
+                <p className="font-bold text-sm">Toque no mapa para marcar o local</p>
+                <p className="text-xs text-orange-100">Onde fica a quadra/parque?</p>
+              </div>
+              <button onClick={() => setModoPin(false)} className="ml-2 text-orange-200 hover:text-white text-lg">×</button>
+            </div>
+          )}
           <Mapa quadras={quadras} filtroEsporte={filtroEsporte}
             onQuadraSelecionada={(q) => { setQuadraParaJogo(q) }}
             onMapClick={handleMapClick}

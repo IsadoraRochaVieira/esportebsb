@@ -18,7 +18,12 @@ export default function Mapa({ quadras, filtroEsporte, onQuadraSelecionada, onMa
   const mapInstanceRef = useRef<any>(null)
   const markersRef = useRef<any[]>([])
   const tileRef = useRef<any>(null)
+  const onMapClickRef = useRef(onMapClick)
+  const modoPinRef = useRef(modoPin)
   const [darkMode, setDarkMode] = useState(false)
+
+  useEffect(() => { onMapClickRef.current = onMapClick }, [onMapClick])
+  useEffect(() => { modoPinRef.current = modoPin }, [modoPin])
 
   useEffect(() => {
     if (typeof window === 'undefined' || mapInstanceRef.current) return
@@ -39,7 +44,7 @@ export default function Mapa({ quadras, filtroEsporte, onQuadraSelecionada, onMa
       }).addTo(map)
 
       map.on('click', (e: any) => {
-        if (onMapClick) onMapClick(e.latlng.lat, e.latlng.lng)
+        if (onMapClickRef.current) onMapClickRef.current(e.latlng.lat, e.latlng.lng)
       })
 
       mapInstanceRef.current = map
