@@ -8,7 +8,9 @@
       "Bash(npx tsc *)",
       "Bash(git add *)",
       "Bash(git commit -m 'feat: mira central para marcar local, login real com recuperacao de senha, whatsapp e infos do jogo *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "mcp__claude-in-chrome__tabs_context_mcp",
+      "Bash(git commit -m 'fix: mapa por cima dos modais e painel - prender z-index do Leaflet *)"
     ]
   }
 }

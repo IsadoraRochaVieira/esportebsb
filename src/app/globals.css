@@ -12,6 +12,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Prende os z-index internos do Leaflet (400-1000) dentro do container do mapa,
+   senão o mapa fica por cima dos modais e do painel lateral */
+.leaflet-container {
+  z-index: 0 !important;
+}
+
 /* Altura real da tela no mobile (barra do navegador não conta) */
 .app-shell {
   height: 100vh;
