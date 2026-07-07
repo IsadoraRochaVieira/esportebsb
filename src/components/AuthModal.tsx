@@ -10,16 +10,30 @@ interface AuthModalProps {
 }
 
 export default function AuthModal({ onFechar, onSucesso, modoInicial = 'login' }: AuthModalProps) {
-  const [modo, setModo] = useState<'login' | 'cadastro'>(modoInicial)
+  const [modo, setModo] = useState<'login' | 'cadastro' | 'recuperar'>(modoInicial)
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
   const [nome, setNome] = useState('')
   const [carregando, setCarregando] = useState(false)
   const [erro, setErro] = useState('')
+  const [aviso, setAviso] = useState('')
 
   const supabase = createClient()
 
+  async function recuperarSenha() {
+    if (!email) { setErro('Digite seu e-mail.'); return }
+    setCarregando(true)
+    setErro('')
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/redefinir-senha`,
+    })
+    setCarregando(false)
+    if (error) { setErro('Não foi possível enviar o e-mail. Confira o endereço.'); return }
+    setAviso(`Enviamos um link de recuperação para ${email}. Confira sua caixa de entrada (e o spam).`)
+  }
+
   async function entrar() {
+    if (modo === 'recuperar') { recuperarSenha(); return }
     if (!email || !senha) { setErro('Preencha e-mail e senha.'); return }
     setCarregando(true)
     setErro('')
@@ -57,10 +71,10 @@ export default function AuthModal({ onFechar, onSucesso, modoInicial = 'login' }
           <button onClick={onFechar} className="float-right text-blue-200 hover:text-white text-xl leading-none">×</button>
           <div className="text-2xl mb-1">⚽</div>
           <h2 className="text-xl font-bold">
-            {modo === 'login' ? 'Bem-vinda de volta!' : 'Junte-se ao Esporte Brasília'}
+            {modo === 'login' ? 'Bem-vinda de volta!' : modo === 'recuperar' ? 'Recuperar senha' : 'Junte-se ao Esporte Brasília'}
           </h2>
           <p className="text-blue-200 text-sm mt-0.5">
-            {modo === 'login' ? 'Entre para ver e participar dos jogos' : 'Encontre seu esporte em Brasília'}
+            {modo === 'login' ? 'Entre para ver e participar dos jogos' : modo === 'recuperar' ? 'Enviaremos um link para seu e-mail' : 'Encontre seu esporte em Brasília'}
           </p>
         </div>
 
@@ -81,13 +95,27 @@ export default function AuthModal({ onFechar, onSucesso, modoInicial = 'login' }
               className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
           </div>
 
-          <div>
-            <label className="block text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">Senha</label>
-            <input type="password" placeholder="••••••••" value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && entrar()}
-              className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
-          </div>
+          {modo !== 'recuperar' && (
+            <div>
+              <label className="block text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">Senha</label>
+              <input type="password" placeholder="••••••••" value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && entrar()}
+                className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
+              {modo === 'login' && (
+                <button onClick={() => { setModo('recuperar'); setErro(''); setAviso('') }}
+                  className="text-xs text-blue-600 hover:underline mt-1.5">
+                  Esqueci minha senha
+                </button>
+              )}
+            </div>
+          )}
+
+          {aviso && (
+            <div className="bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 text-sm text-emerald-700">
+              {aviso}
+            </div>
+          )}
 
           {erro && (
             <div className="bg-red-50 border border-red-200 rounded-xl px-3 py-2 text-sm text-red-600">
@@ -97,12 +125,12 @@ export default function AuthModal({ onFechar, onSucesso, modoInicial = 'login' }
 
           <button onClick={entrar} disabled={carregando}
             className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition shadow-sm disabled:opacity-50 mt-1">
-            {carregando ? '...' : modo === 'login' ? 'Entrar' : 'Criar conta grátis'}
+            {carregando ? '...' : modo === 'login' ? 'Entrar' : modo === 'recuperar' ? 'Enviar link de recuperação' : 'Criar conta grátis'}
           </button>
 
           <p className="text-center text-sm text-slate-500">
-            {modo === 'login' ? 'Novo por aqui?' : 'Já tem conta?'}{' '}
-            <button onClick={() => { setModo(modo === 'login' ? 'cadastro' : 'login'); setErro('') }}
+            {modo === 'login' ? 'Novo por aqui?' : modo === 'recuperar' ? 'Lembrou a senha?' : 'Já tem conta?'}{' '}
+            <button onClick={() => { setModo(modo === 'login' ? 'cadastro' : 'login'); setErro(''); setAviso('') }}
               className="text-blue-600 font-semibold hover:underline">
               {modo === 'login' ? 'Criar conta' : 'Entrar'}
             </button>

@@ -5,11 +5,12 @@ import { useState, useEffect } from 'react'
 interface LandingPageProps {
   onEntrar: () => void
   onCriarConta: () => void
+  onLogin: () => void
 }
 
 const SPORTS = ['⚽ Futsal', '🏐 Vôlei', '🏀 Basquete', '🎾 Beach Tênis', '🏃 Corrida', '🛹 Skate', '🧘 Yoga', '🚴 Ciclismo', '♟️ Xadrez', '🥋 Jiu-Jitsu', '🎾 Tênis', '🏊 Natação']
 
-export default function LandingPage({ onEntrar, onCriarConta }: LandingPageProps) {
+export default function LandingPage({ onEntrar, onCriarConta, onLogin }: LandingPageProps) {
   const [activeSport, setActiveSport] = useState(0)
   const [visible, setVisible] = useState(false)
 
@@ -39,7 +40,7 @@ export default function LandingPage({ onEntrar, onCriarConta }: LandingPageProps
           <div style={{ width: 36, height: 36, borderRadius: 10, background: 'linear-gradient(135deg, #00ff87, #00d4ff)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, boxShadow: '0 0 20px rgba(0,255,135,0.4)' }}>⚽</div>
           <span style={{ color: '#fff', fontWeight: 800, fontSize: 16, letterSpacing: '-0.5px' }}>Esporte Brasília</span>
         </div>
-        <button onClick={onEntrar} style={{ color: 'rgba(255,255,255,0.6)', background: 'none', border: '1px solid rgba(255,255,255,0.15)', padding: '8px 18px', borderRadius: 20, fontSize: 13, cursor: 'pointer', transition: 'all 0.2s' }}>
+        <button onClick={onLogin} style={{ color: 'rgba(255,255,255,0.6)', background: 'none', border: '1px solid rgba(255,255,255,0.15)', padding: '8px 18px', borderRadius: 20, fontSize: 13, cursor: 'pointer', transition: 'all 0.2s' }}>
           Entrar
         </button>
       </header>

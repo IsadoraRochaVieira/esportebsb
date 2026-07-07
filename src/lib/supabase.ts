@@ -49,6 +49,7 @@ export interface Jogo {
   custo_tipo?: 'gratis' | 'pago'
   custo_valor?: string
   is_recorrente?: boolean
+  whatsapp_link?: string
   data_evento?: string
   criado_por?: string
   criado_em?: string

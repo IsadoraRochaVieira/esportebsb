@@ -22,6 +22,7 @@ export default function ModalNovoJogo({ quadraId, userId, onFechar, onSalvo }: M
     descricao: '',
     custo_tipo: 'gratis',
     custo_valor: '',
+    whatsapp_link: '',
     is_recorrente: true,
     data_evento: '',
   })
@@ -49,6 +50,7 @@ export default function ModalNovoJogo({ quadraId, userId, onFechar, onSalvo }: M
       custo_tipo: form.custo_tipo,
       custo_valor: form.custo_tipo === 'pago' ? form.custo_valor : null,
       is_recorrente: form.is_recorrente,
+      whatsapp_link: form.whatsapp_link.trim() || null,
       data_evento: !form.is_recorrente && form.data_evento ? form.data_evento : null,
     })
     setSalvando(false)
@@ -159,6 +161,14 @@ export default function ModalNovoJogo({ quadraId, userId, onFechar, onSalvo }: M
             <input type="number" min="1" placeholder="ex: 10" value={form.vagas}
               onChange={(e) => campo('vagas', e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Grupo do WhatsApp (opcional)</label>
+            <input type="url" placeholder="https://chat.whatsapp.com/..."
+              value={form.whatsapp_link} onChange={(e) => campo('whatsapp_link', e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" />
+            <p className="text-xs text-gray-400 mt-1">Quem se interessar entra direto no grupo</p>
           </div>
 
           <div>

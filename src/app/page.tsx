@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import { Toaster, toast } from 'sonner'
 import { createClient, type Quadra, type Jogo } from '@/lib/supabase'
@@ -35,6 +35,7 @@ export default function Home() {
   const [carregando, setCarregando] = useState(true)
   const [showSobre, setShowSobre] = useState(false)
   const [showLanding, setShowLanding] = useState(true)
+  const leafletMapRef = useRef<any>(null)
 
   const supabase = createClient()
 
@@ -131,6 +132,7 @@ export default function Home() {
       <LandingPage
         onEntrar={() => setShowLanding(false)}
         onCriarConta={() => { setShowLanding(false); setAuthModo('cadastro'); setShowAuth(true) }}
+        onLogin={() => { setShowLanding(false); setAuthModo('login'); setShowAuth(true) }}
       />
     )
   }
@@ -302,20 +304,38 @@ export default function Home() {
         <div className={`${vista === 'mapa' ? 'flex' : 'hidden'} lg:flex flex-1 relative`}>
           {/* Banner modo pin */}
           {modoPin && (
-            <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 bg-orange-500 text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3 animate-slide-up">
-              <span className="text-xl">📍</span>
-              <div>
-                <p className="font-bold text-sm">Toque no mapa para marcar o local</p>
-                <p className="text-xs text-orange-100">Onde fica a quadra/parque?</p>
+            <>
+              <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 bg-orange-500 text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3 animate-slide-up w-[92%] sm:w-auto">
+                <span className="text-xl">📍</span>
+                <div className="flex-1">
+                  <p className="font-bold text-sm">Arraste o mapa até o local</p>
+                  <p className="text-xs text-orange-100">Deixe a mira 📍 em cima da quadra/parque</p>
+                </div>
+                <button onClick={() => setModoPin(false)} className="ml-2 text-orange-200 hover:text-white text-lg">×</button>
               </div>
-              <button onClick={() => setModoPin(false)} className="ml-2 text-orange-200 hover:text-white text-lg">×</button>
-            </div>
+
+              {/* Mira central */}
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-full z-20 pointer-events-none text-4xl drop-shadow-lg">
+                📍
+              </div>
+
+              {/* Botão confirmar */}
+              <button
+                onClick={() => {
+                  const c = leafletMapRef.current?.getCenter()
+                  if (c) { setNovoPin({ lat: c.lat, lng: c.lng }); setModoPin(false) }
+                }}
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 bg-orange-500 text-white px-8 py-4 rounded-2xl shadow-xl font-bold text-base hover:bg-orange-600 transition active:scale-95 animate-slide-up">
+                ✓ Marcar local aqui
+              </button>
+            </>
           )}
           <Mapa quadras={quadras} filtroEsporte={filtroEsporte}
             onQuadraSelecionada={(q) => { setQuadraParaJogo(q) }}
             onMapClick={handleMapClick}
             modoPin={modoPin}
-            visible={vista === 'mapa'} />
+            visible={vista === 'mapa'}
+            onMapReady={(m) => { leafletMapRef.current = m }} />
 
           {/* Painel lateral do local selecionado */}
           {quadraParaJogo && (
@@ -366,8 +386,21 @@ export default function Home() {
                               <span>🕐 {j.horario}</span>
                               <span style={{ color: esp.cor }} className="font-semibold">{vagas} vagas</span>
                             </div>
+                            <div className="flex flex-wrap gap-1.5 mt-2">
+                              <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${j.custo_tipo === 'pago' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}`}>
+                                {j.custo_tipo === 'pago' ? `💰 ${j.custo_valor ?? 'Pago'}` : '✓ Gratuito'}
+                              </span>
+                              {j.is_recorrente && <span className="text-xs px-2 py-0.5 rounded-full font-semibold bg-slate-100 text-slate-600">🔁 Semanal</span>}
+                            </div>
+                            {j.descricao && <p className="text-xs text-slate-400 mt-2">{j.descricao}</p>}
                           </div>
                         </div>
+                        {j.whatsapp_link && (
+                          <a href={j.whatsapp_link} target="_blank" rel="noopener noreferrer"
+                            className="flex items-center justify-center gap-2 w-full mt-3 py-2 rounded-xl text-xs font-semibold bg-green-500 text-white hover:bg-green-600 transition">
+                            💬 Entrar no grupo do WhatsApp
+                          </a>
+                        )}
                         <button
                           onClick={() => participando ? cancelar(j.id) : participar(j.id)}
                           className="w-full mt-3 py-2 rounded-xl text-xs font-semibold transition"

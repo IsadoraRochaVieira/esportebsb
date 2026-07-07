@@ -95,6 +95,15 @@ export default function CardEvento({ jogo, userId, participando, onParticipar, o
           <p className="text-xs text-slate-400 mb-3 line-clamp-2">{jogo.descricao}</p>
         )}
 
+        {/* WhatsApp */}
+        {jogo.whatsapp_link && (
+          <a href={jogo.whatsapp_link} target="_blank" rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center justify-center gap-2 w-full mb-2 py-2 rounded-xl text-xs font-semibold bg-green-500 text-white hover:bg-green-600 transition">
+            💬 Grupo do WhatsApp
+          </a>
+        )}
+
         {/* Botão */}
         {userId && (
           <button

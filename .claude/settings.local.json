@@ -4,7 +4,11 @@
       "mcp__visualize__read_me",
       "mcp__visualize__show_widget",
       "mcp__Claude_in_Chrome__list_connected_browsers",
-      "PowerShell(Start-Process \"msedge.exe\" \"https://supabase.com/dashboard/project/ifavyrmpdjncuhiutkeo/settings/api\")"
+      "PowerShell(Start-Process \"msedge.exe\" \"https://supabase.com/dashboard/project/ifavyrmpdjncuhiutkeo/settings/api\")",
+      "Bash(npx tsc *)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'feat: mira central para marcar local, login real com recuperacao de senha, whatsapp e infos do jogo *)",
+      "Bash(git push *)"
     ]
   }
 }

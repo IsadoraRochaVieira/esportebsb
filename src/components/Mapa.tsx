@@ -11,9 +11,10 @@ interface MapaProps {
   onMapClick?: (lat: number, lng: number) => void
   modoPin?: boolean
   visible?: boolean
+  onMapReady?: (map: any) => void
 }
 
-export default function Mapa({ quadras, filtroEsporte, onQuadraSelecionada, onMapClick, modoPin, visible }: MapaProps) {
+export default function Mapa({ quadras, filtroEsporte, onQuadraSelecionada, onMapClick, modoPin, visible, onMapReady }: MapaProps) {
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<any>(null)
   const markersRef = useRef<any[]>([])
@@ -50,6 +51,7 @@ export default function Mapa({ quadras, filtroEsporte, onQuadraSelecionada, onMa
 
       mapInstanceRef.current = map
       setMapReady(true)
+      onMapReady?.(map)
     })
 
     return () => {
