@@ -9,19 +9,23 @@ interface LandingPageProps {
 }
 
 const SPORTS = [
-  { tag: '⚽ Futsal', frase: 'jogar futsal' },
-  { tag: '🏐 Vôlei', frase: 'jogar vôlei' },
-  { tag: '🏀 Basquete', frase: 'jogar basquete' },
-  { tag: '🏖️ Beach Tênis', frase: 'jogar beach tênis' },
-  { tag: '🏃 Corrida', frase: 'correr em grupo' },
-  { tag: '🛹 Skate', frase: 'andar de skate' },
-  { tag: '🧘 Yoga', frase: 'praticar yoga' },
-  { tag: '🚴 Ciclismo', frase: 'pedalar' },
-  { tag: '♟️ Xadrez', frase: 'jogar xadrez' },
-  { tag: '🥋 Jiu-Jitsu', frase: 'treinar jiu-jitsu' },
-  { tag: '☯️ Tai Chi Chuan', frase: 'praticar tai chi chuan' },
-  { tag: '🎾 Tênis', frase: 'jogar tênis' },
-  { tag: '🏊 Natação', frase: 'nadar' },
+  { emoji: '⚽', tag: '⚽ Futsal', frase: 'jogar futsal' },
+  { emoji: '🏐', tag: '🏐 Vôlei', frase: 'jogar vôlei' },
+  { emoji: '🦶', tag: '🦶 Futevôlei', frase: 'jogar futevôlei' },
+  { emoji: '🏀', tag: '🏀 Basquete', frase: 'jogar basquete' },
+  { emoji: '🏓', tag: '🏓 Beach Tênis', frase: 'jogar beach tênis' },
+  { emoji: '🏃', tag: '🏃 Corrida', frase: 'correr em grupo' },
+  { emoji: '🛼', tag: '🛼 Patins', frase: 'andar de patins' },
+  { emoji: '🛹', tag: '🛹 Skate', frase: 'andar de skate' },
+  { emoji: '🧘', tag: '🧘 Yoga', frase: 'praticar yoga' },
+  { emoji: '🚴', tag: '🚴 Ciclismo', frase: 'pedalar' },
+  { emoji: '🪶', tag: '🪶 Peteca', frase: 'jogar peteca' },
+  { emoji: '🏄', tag: '🏄 SUP', frase: 'remar no Lago Paranoá' },
+  { emoji: '♟️', tag: '♟️ Xadrez', frase: 'jogar xadrez' },
+  { emoji: '🥋', tag: '🥋 Jiu-Jitsu', frase: 'treinar jiu-jitsu' },
+  { emoji: '☯️', tag: '☯️ Tai Chi Chuan', frase: 'praticar tai chi chuan' },
+  { emoji: '🎾', tag: '🎾 Tênis', frase: 'jogar tênis' },
+  { emoji: '🏊', tag: '🏊 Natação', frase: 'nadar' },
 ]
 
 export default function LandingPage({ onEntrar, onCriarConta, onLogin }: LandingPageProps) {
@@ -92,7 +96,7 @@ export default function LandingPage({ onEntrar, onCriarConta, onLogin }: Landing
 
         {/* Subtítulo */}
         <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 18, maxWidth: 500, margin: '0 0 44px', lineHeight: 1.65 }}>
-          Encontre pessoas pra <strong style={{ color: '#00ff87', fontWeight: 700 }}>{SPORTS[activeSport].frase}</strong> perto de você em Brasília.<br />
+          Encontre pessoas pra <strong style={{ color: '#00ff87', fontWeight: 700 }}>{SPORTS[activeSport].frase} {SPORTS[activeSport].emoji}</strong> perto de você em Brasília.<br />
           Gratuito, sem burocracia.
         </p>
 

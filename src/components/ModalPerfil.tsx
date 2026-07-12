@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { createClient, type Perfil } from '@/lib/supabase'
 import { ESPORTES, GENEROS } from '@/lib/constants'
 
@@ -14,8 +14,29 @@ interface ModalPerfilProps {
 export default function ModalPerfil({ userId, userEmail, onFechar, onSair }: ModalPerfilProps) {
   const [form, setForm] = useState<Partial<Perfil>>({ nome: '', genero: 'nao_informado', esportes: [] })
   const [salvando, setSalvando] = useState(false)
+  const [enviandoFoto, setEnviandoFoto] = useState(false)
   const [msg, setMsg] = useState('')
+  const fileRef = useRef<HTMLInputElement>(null)
   const supabase = createClient()
+
+  async function enviarFoto(file: File) {
+    if (file.size > 4 * 1024 * 1024) { setMsg('Foto muito grande (máx. 4MB).'); return }
+    setEnviandoFoto(true)
+    setMsg('')
+    const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg'
+    const path = `${userId}.${ext}`
+    const { error } = await supabase.storage.from('avatars').upload(path, file, { upsert: true, contentType: file.type })
+    if (error) {
+      setMsg('Não foi possível enviar a foto. Tente novamente.')
+      setEnviandoFoto(false)
+      return
+    }
+    const { data } = supabase.storage.from('avatars').getPublicUrl(path)
+    const url = `${data.publicUrl}?v=${Date.now()}`
+    await supabase.from('perfis').upsert({ id: userId, avatar_url: url })
+    setForm((f) => ({ ...f, avatar_url: url }))
+    setEnviandoFoto(false)
+  }
 
   useEffect(() => {
     supabase.from('perfis').select('*').eq('id', userId).single().then(({ data }) => {
@@ -44,9 +65,24 @@ export default function ModalPerfil({ userId, userEmail, onFechar, onSair }: Mod
         <div className="bg-gradient-to-br from-slate-800 to-slate-700 px-6 py-5 text-white">
           <div className="flex items-center justify-between">
             <div>
-              <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-2xl mb-2">👤</div>
+              <button onClick={() => fileRef.current?.click()} disabled={enviandoFoto}
+                className="relative w-16 h-16 rounded-full bg-white/20 flex items-center justify-center text-2xl mb-2 overflow-hidden group cursor-pointer border-2 border-white/30 hover:border-white/60 transition"
+                title="Trocar foto de perfil">
+                {form.avatar_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={form.avatar_url} alt="Foto de perfil" className="w-full h-full object-cover" />
+                ) : (
+                  <span>👤</span>
+                )}
+                <span className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center text-xs text-white font-semibold transition">
+                  {enviandoFoto ? '...' : '📷'}
+                </span>
+              </button>
+              <input ref={fileRef} type="file" accept="image/*" className="hidden"
+                onChange={(e) => { const f = e.target.files?.[0]; if (f) enviarFoto(f) }} />
               <p className="font-bold text-lg">{form.nome || 'Meu Perfil'}</p>
               {userEmail && <p className="text-slate-300 text-xs">{userEmail}</p>}
+              <p className="text-slate-400 text-[11px] mt-0.5">Toque na foto para trocar</p>
             </div>
             <button onClick={onFechar} className="text-slate-300 hover:text-white text-2xl leading-none self-start">×</button>
           </div>
