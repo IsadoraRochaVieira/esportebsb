@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import { Toaster, toast } from 'sonner'
 import { createClient, type Quadra, type Jogo } from '@/lib/supabase'
 import { ESPORTES } from '@/lib/constants'
+import { Linkify } from '@/lib/linkify'
 import CardEvento from '@/components/CardEvento'
 import ModalNovaQuadra from '@/components/ModalNovaQuadra'
 import ModalNovoJogo from '@/components/ModalNovoJogo'
@@ -392,7 +393,7 @@ export default function Home() {
                               </span>
                               {j.is_recorrente && <span className="text-xs px-2 py-0.5 rounded-full font-semibold bg-slate-100 text-slate-600">🔁 Semanal</span>}
                             </div>
-                            {j.descricao && <p className="text-xs text-slate-400 mt-2">{j.descricao}</p>}
+                            {j.descricao && <p className="text-xs text-slate-400 mt-2"><Linkify text={j.descricao} /></p>}
                           </div>
                         </div>
                         {j.whatsapp_link && (

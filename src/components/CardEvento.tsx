@@ -1,6 +1,7 @@
 'use client'
 
 import { ESPORTES, TIPOS, DIAS } from '@/lib/constants'
+import { Linkify } from '@/lib/linkify'
 import type { Jogo } from '@/lib/supabase'
 
 interface CardEventoProps {
@@ -92,7 +93,7 @@ export default function CardEvento({ jogo, userId, participando, onParticipar, o
 
         {/* Descrição */}
         {jogo.descricao && (
-          <p className="text-xs text-slate-400 mb-3 line-clamp-2">{jogo.descricao}</p>
+          <p className="text-xs text-slate-400 mb-3"><Linkify text={jogo.descricao} /></p>
         )}
 
         {/* WhatsApp */}

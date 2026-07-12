@@ -2,7 +2,7 @@ export const ESPORTES = [
   { value: 'futsal', label: 'Futsal', emoji: '⚽', cor: '#16a34a', bg: '#dcfce7', text: '#166534' },
   { value: 'futebol', label: 'Futebol', emoji: '🏟', cor: '#15803d', bg: '#dcfce7', text: '#14532d' },
   { value: 'tenis', label: 'Tênis', emoji: '🎾', cor: '#ca8a04', bg: '#fef9c3', text: '#854d0e' },
-  { value: 'beach_tenis', label: 'Beach Tênis', emoji: '🎾', cor: '#b45309', bg: '#fef3c7', text: '#92400e' },
+  { value: 'beach_tenis', label: 'Beach Tênis', emoji: '🏖️', cor: '#b45309', bg: '#fef3c7', text: '#92400e' },
   { value: 'volei', label: 'Vôlei', emoji: '🏐', cor: '#2563eb', bg: '#dbeafe', text: '#1e40af' },
   { value: 'basquete', label: 'Basquete', emoji: '🏀', cor: '#ea580c', bg: '#ffedd5', text: '#9a3412' },
   { value: 'corrida', label: 'Corrida', emoji: '🏃', cor: '#9333ea', bg: '#f3e8ff', text: '#6b21a8' },
@@ -13,6 +13,7 @@ export const ESPORTES = [
   { value: 'yoga', label: 'Yoga', emoji: '🧘', cor: '#d97706', bg: '#fef3c7', text: '#92400e' },
   { value: 'crossfit', label: 'Crossfit', emoji: '💪', cor: '#be123c', bg: '#ffe4e6', text: '#9f1239' },
   { value: 'xadrez', label: 'Xadrez', emoji: '♟️', cor: '#374151', bg: '#f3f4f6', text: '#111827' },
+  { value: 'tai_chi', label: 'Tai Chi Chuan', emoji: '☯️', cor: '#0d9488', bg: '#ccfbf1', text: '#115e59' },
   { value: 'outro', label: 'Outro', emoji: '🏅', cor: '#64748b', bg: '#f1f5f9', text: '#475569' },
 ]
 
