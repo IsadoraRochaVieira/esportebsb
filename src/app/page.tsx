@@ -202,7 +202,7 @@ export default function Home() {
         </div>
 
         {/* Filtros de esporte */}
-        <div className="flex gap-2 px-4 pb-2.5 overflow-x-auto">
+        <div className="filtros-scroll flex gap-2 px-4 pb-2.5 overflow-x-auto">
           <button onClick={() => { setFiltroEsporte(''); setFiltroTipo('') }}
             className={`text-xs px-3 py-1.5 rounded-full font-semibold whitespace-nowrap transition ${!filtroEsporte && !filtroTipo ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>
             Todos

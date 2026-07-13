@@ -27,7 +27,9 @@ export default function ModalPerfil({ userId, userEmail, onFechar, onSair }: Mod
     const path = `${userId}.${ext}`
     const { error } = await supabase.storage.from('avatars').upload(path, file, { upsert: true, contentType: file.type })
     if (error) {
-      setMsg('Não foi possível enviar a foto. Tente novamente.')
+      setMsg(error.message.includes('Bucket not found')
+        ? 'O armazenamento de fotos ainda não foi configurado.'
+        : 'Não foi possível enviar a foto. Tente novamente.')
       setEnviandoFoto(false)
       return
     }
