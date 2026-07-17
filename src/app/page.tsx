@@ -155,7 +155,8 @@ export default function Home() {
         <div className="flex items-center gap-3 px-4 py-3">
           {/* Logo */}
           <div className="flex items-center gap-2 mr-1 cursor-pointer" onClick={() => setShowSobre(true)}>
-            <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">⚽</div>
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-sm"
+              style={{ background: 'linear-gradient(135deg, #00ff87, #00d4ff)' }}>⚽</div>
             <span className="font-bold text-slate-900 text-base hidden sm:block">Esporte Brasília</span>
           </div>
 
@@ -185,7 +186,8 @@ export default function Home() {
 
           {/* Ações */}
           <button onClick={ativarModoPin}
-            className={`flex items-center gap-1.5 text-sm px-3 py-2 rounded-xl font-semibold transition shadow-sm ${modoPin ? 'bg-orange-500 text-white' : 'bg-blue-600 text-white hover:bg-blue-700'}`}>
+            className="flex items-center gap-1.5 text-sm px-3 py-2 rounded-xl font-semibold transition shadow-sm text-white"
+            style={modoPin ? { background: '#f97316' } : { background: 'var(--neon)' }}>
             <span>{modoPin ? '📍' : '+'}</span>
             <span className="hidden sm:block">{modoPin ? 'Clique no mapa' : 'Novo local'}</span>
           </button>
@@ -205,7 +207,8 @@ export default function Home() {
                 Entrar
               </button>
               <button onClick={() => { setAuthModo('cadastro'); setShowAuth(true) }}
-                className="text-sm font-semibold bg-blue-600 text-white px-3 py-2 rounded-xl hover:bg-blue-700 transition whitespace-nowrap">
+                className="text-sm font-semibold text-white px-3 py-2 rounded-xl transition whitespace-nowrap shadow-sm"
+                style={{ background: 'var(--neon)' }}>
                 Criar conta
               </button>
             </div>
@@ -215,12 +218,13 @@ export default function Home() {
         {/* Filtros de esporte */}
         <div className="filtros-scroll flex gap-2 px-4 pb-2.5 overflow-x-auto">
           <button onClick={() => { setFiltroEsporte(''); setFiltroTipo('') }}
-            className={`text-xs px-3 py-1.5 rounded-full font-semibold whitespace-nowrap transition ${!filtroEsporte && !filtroTipo ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>
+            className={`chip-filtro text-xs px-3.5 py-1.5 rounded-full font-semibold whitespace-nowrap transition ${!filtroEsporte && !filtroTipo ? 'text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+            style={!filtroEsporte && !filtroTipo ? { background: 'var(--neon)' } : {}}>
             Todos
           </button>
           {ESPORTES.map((e) => (
             <button key={e.value} onClick={() => setFiltroEsporte(filtroEsporte === e.value ? '' : e.value)}
-              className="text-xs px-3 py-1.5 rounded-full font-semibold whitespace-nowrap transition"
+              className="chip-filtro text-xs px-3.5 py-1.5 rounded-full font-semibold whitespace-nowrap transition"
               style={filtroEsporte === e.value ? { background: e.cor, color: 'white' } : { background: '#f1f5f9', color: '#475569' }}>
               {e.emoji} {e.label}
             </button>
@@ -232,7 +236,7 @@ export default function Home() {
             { v: 'aberto', l: '🔓 Aberto', bg: '#dbeafe', text: '#1e40af', active: '#2563eb' },
           ].map((t) => (
             <button key={t.v} onClick={() => setFiltroTipo(filtroTipo === t.v ? '' : t.v)}
-              className="text-xs px-3 py-1.5 rounded-full font-semibold whitespace-nowrap transition"
+              className="chip-filtro text-xs px-3.5 py-1.5 rounded-full font-semibold whitespace-nowrap transition"
               style={filtroTipo === t.v ? { background: t.active, color: 'white' } : { background: t.bg, color: t.text }}>
               {t.l}
             </button>
@@ -296,7 +300,8 @@ export default function Home() {
                   {busca ? `Nada para "${busca}"` : 'Seja o primeiro a criar um jogo nessa área!'}
                 </p>
                 <button onClick={ativarModoPin}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-blue-700 transition">
+                  className="text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-sm"
+                  style={{ background: 'var(--neon)' }}>
                   + Adicionar local
                 </button>
               </div>
@@ -431,7 +436,8 @@ export default function Home() {
               <div className="p-4 border-t border-slate-100 flex-shrink-0">
                 <button
                   onClick={() => { setCriarJogoNaQuadra(quadraParaJogo); setQuadraParaJogo(null) }}
-                  className="w-full bg-blue-600 text-white py-3 rounded-xl text-sm font-semibold hover:bg-blue-700 transition">
+                  className="w-full text-white py-3 rounded-xl text-sm font-semibold transition shadow-sm"
+                  style={{ background: 'var(--neon)' }}>
                   + Criar jogo neste local
                 </button>
               </div>
@@ -444,7 +450,8 @@ export default function Home() {
       {!quadraParaJogo && (
       <div className="lg:hidden fixed bottom-6 right-4 z-30">
         <button onClick={ativarModoPin}
-          className="w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center text-2xl hover:bg-blue-700 transition active:scale-95">
+          className="w-14 h-14 text-white rounded-full flex items-center justify-center text-2xl transition active:scale-95"
+          style={{ background: 'var(--neon)', boxShadow: '0 4px 20px var(--neon-glow), 0 2px 8px rgba(0,0,0,0.2)' }}>
           +
         </button>
       </div>
@@ -477,11 +484,14 @@ export default function Home() {
       {showSobre && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center p-4 animate-fade-in" onClick={() => setShowSobre(false)}>
           <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden animate-slide-up" onClick={(e) => e.stopPropagation()}>
-            <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-700 px-6 py-8 text-white relative">
-              <button onClick={() => setShowSobre(false)} className="absolute top-4 right-4 text-blue-200 hover:text-white text-2xl leading-none">×</button>
-              <div className="text-4xl mb-3">⚽</div>
-              <h2 className="text-2xl font-bold">Esporte Brasília</h2>
-              <p className="text-blue-200 text-sm mt-1">A rede social dos esportes do DF</p>
+            <div className="px-6 py-8 text-white relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #030507 0%, #06251a 60%, #03202e 100%)' }}>
+              <div className="absolute -top-20 -right-12 w-64 h-64 rounded-full pointer-events-none"
+                style={{ background: 'radial-gradient(circle, rgba(0,255,135,0.22) 0%, transparent 70%)', filter: 'blur(30px)' }} />
+              <button onClick={() => setShowSobre(false)} className="absolute top-4 right-4 text-white/50 hover:text-white text-2xl leading-none z-10">×</button>
+              <div className="text-4xl mb-3 relative z-10">⚽</div>
+              <h2 className="text-2xl font-bold relative z-10">Esporte Brasília</h2>
+              <p className="text-white/50 text-sm mt-1 relative z-10">A rede social dos esportes do DF</p>
             </div>
             <div className="p-6 space-y-5">
               <div className="flex gap-3">

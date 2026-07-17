@@ -67,13 +67,17 @@ export default function AuthModal({ onFechar, onSucesso, modoInicial = 'login' }
     <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 animate-fade-in">
       <div className="bg-white rounded-3xl w-full max-w-sm shadow-2xl overflow-hidden animate-slide-up">
         {/* Header colorido */}
-        <div className="bg-gradient-to-br from-blue-600 to-blue-700 px-6 py-6 text-white">
-          <button onClick={onFechar} className="float-right text-blue-200 hover:text-white text-xl leading-none">×</button>
-          <div className="text-2xl mb-1">⚽</div>
-          <h2 className="text-xl font-bold">
+        <div className="px-6 py-6 text-white relative overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, #030507 0%, #06251a 60%, #03202e 100%)' }}>
+          {/* brilho neon, como na página inicial */}
+          <div className="absolute -top-16 -right-10 w-56 h-56 rounded-full pointer-events-none"
+            style={{ background: 'radial-gradient(circle, rgba(0,255,135,0.22) 0%, transparent 70%)', filter: 'blur(28px)' }} />
+          <button onClick={onFechar} className="float-right text-white/50 hover:text-white text-xl leading-none relative z-10">×</button>
+          <div className="text-2xl mb-1 relative z-10">⚽</div>
+          <h2 className="text-xl font-bold relative z-10">
             {modo === 'login' ? 'Bem-vinda de volta!' : modo === 'recuperar' ? 'Recuperar senha' : 'Junte-se ao Esporte Brasília'}
           </h2>
-          <p className="text-blue-200 text-sm mt-0.5">
+          <p className="text-white/50 text-sm mt-0.5 relative z-10">
             {modo === 'login' ? 'Entre para ver e participar dos jogos' : modo === 'recuperar' ? 'Enviaremos um link para seu e-mail' : 'Encontre seu esporte em Brasília'}
           </p>
         </div>
@@ -124,7 +128,8 @@ export default function AuthModal({ onFechar, onSucesso, modoInicial = 'login' }
           )}
 
           <button onClick={entrar} disabled={carregando}
-            className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition shadow-sm disabled:opacity-50 mt-1">
+            className="w-full text-white py-3 rounded-xl font-semibold transition shadow-sm disabled:opacity-50 mt-1"
+            style={{ background: 'var(--neon)' }}>
             {carregando ? '...' : modo === 'login' ? 'Entrar' : modo === 'recuperar' ? 'Enviar link de recuperação' : 'Criar conta grátis'}
           </button>
 

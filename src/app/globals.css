@@ -3,6 +3,10 @@
 :root {
   --background: #f8fafc;
   --foreground: #0f172a;
+  /* Verde neon da marca — costura a landing com o app */
+  --neon: #00c96f;
+  --neon-hover: #00b463;
+  --neon-glow: rgba(0, 201, 111, 0.25);
 }
 
 body {
@@ -48,9 +52,22 @@ body {
 .filtros-scroll::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 6px; border: 2px solid #f1f5f9; }
 .filtros-scroll::-webkit-scrollbar-thumb:hover { background: #64748b; }
 
-/* Barra de filtros: scrollbar maior e mais fácil de arrastar no desktop */
-.filtros-scroll { scrollbar-width: auto; scrollbar-color: #94a3b8 #f1f5f9; }
-.filtros-scroll::-webkit-scrollbar { height: 10px; }
-.filtros-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 5px; }
-.filtros-scroll::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 5px; border: 2px solid #f1f5f9; }
-.filtros-scroll::-webkit-scrollbar-thumb:hover { background: #64748b; }
+/* Chips de filtro: área de toque de 44px no celular (dedão não erra) */
+.chip-filtro {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+@media (min-width: 1024px) {
+  .chip-filtro { min-height: 32px; }
+}
+
+/* Respeita quem prefere menos movimento (enjoo, vertigem, epilepsia) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
