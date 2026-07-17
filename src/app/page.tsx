@@ -30,6 +30,7 @@ export default function Home() {
   const [showAuth, setShowAuth] = useState(false)
   const [authModo, setAuthModo] = useState<'login' | 'cadastro'>('login')
   const [showPerfil, setShowPerfil] = useState(false)
+  const [avatarUrl, setAvatarUrl] = useState<string | undefined>()
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024
   const [vista, setVista] = useState<'lista' | 'mapa'>(isMobile ? 'mapa' : 'lista')
   const [busca, setBusca] = useState('')
@@ -58,6 +59,11 @@ export default function Home() {
     setParticipacoes(new Set(data?.map((p: any) => p.jogo_id) ?? []))
   }
 
+  async function carregarAvatar(uid: string) {
+    const { data } = await supabase.from('perfis').select('avatar_url').eq('id', uid).single()
+    setAvatarUrl(data?.avatar_url ?? undefined)
+  }
+
   useEffect(() => {
     carregarDados()
     supabase.auth.getUser().then(({ data }) => {
@@ -65,12 +71,14 @@ export default function Home() {
         setUserId(data.user.id)
         setUserEmail(data.user.email ?? undefined)
         carregarParticipacoes(data.user.id)
+        carregarAvatar(data.user.id)
       }
     })
     const { data: listener } = supabase.auth.onAuthStateChange((_e, session) => {
       setUserId(session?.user?.id)
       setUserEmail(session?.user?.email ?? undefined)
-      if (session?.user) carregarParticipacoes(session.user.id)
+      if (session?.user) { carregarParticipacoes(session.user.id); carregarAvatar(session.user.id) }
+      else setAvatarUrl(undefined)
     })
     return () => listener.subscription.unsubscribe()
   }, [])
@@ -184,8 +192,11 @@ export default function Home() {
 
           {userId ? (
             <button onClick={() => setShowPerfil(true)}
-              className="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition font-bold text-sm">
-              👤
+              className="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition font-bold text-sm overflow-hidden border border-slate-200">
+              {avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={avatarUrl} alt="Perfil" className="w-full h-full object-cover" />
+              ) : '👤'}
             </button>
           ) : (
             <div className="flex items-center gap-2">
@@ -506,7 +517,7 @@ export default function Home() {
 
       {showPerfil && userId && (
         <ModalPerfil userId={userId} userEmail={userEmail}
-          onFechar={() => setShowPerfil(false)}
+          onFechar={() => { setShowPerfil(false); carregarAvatar(userId) }}
           onSair={sair} />
       )}
     </div>
